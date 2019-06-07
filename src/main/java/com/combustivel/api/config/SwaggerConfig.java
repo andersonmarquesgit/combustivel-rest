@@ -27,10 +27,10 @@ public class SwaggerConfig {
 
 		ApiInfoBuilder apiInfoBuilder = new ApiInfoBuilder();
 
-		apiInfoBuilder.title("Simios Api");
-		apiInfoBuilder.description("Api para detecção se DNA pertence a um Humano ou a uma Simio.");
+		apiInfoBuilder.title("Combustivel Rest");
+		apiInfoBuilder.description("Api para análises estatísticas de combustíveis.");
 		apiInfoBuilder.version("1.0");
-		apiInfoBuilder.termsOfServiceUrl("Termo de uso: Deve ser usada pelo Mercado Pago.");
+		apiInfoBuilder.termsOfServiceUrl("Termo de uso: Deve ser usada pela Indra.");
 		apiInfoBuilder.license("Licença - Open Source");
 		apiInfoBuilder.licenseUrl("https://goo.gl/Qm3SM9");
 
