@@ -25,4 +25,9 @@ public class State {
 	
 	@Column(name = "state")
 	private String state;
+
+	public State(String region, String state) {
+		this.region = region;
+		this.state = state;
+	}
 }

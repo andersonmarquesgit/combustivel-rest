@@ -21,10 +21,11 @@ public class ImportFileController {
 
 	@Autowired
 	private ImportFileService importFileService;
-	
+    
 	@PostMapping
 	@PreAuthorize("hasAnyRole('ANALYST')") // Autorização com base no perfil. Nesse caso apenas ANALYST pode importar
 	public void importFile(@RequestParam MultipartFile file) {
+		
 		importFileService.importFile(file);
 	}
 }
