@@ -5,7 +5,7 @@ import lombok.Setter;
 
 @Getter
 @Setter
-public class DnaRequest {
+public class CityRequest {
 
-	String[] dna;
+	String city;
 }
