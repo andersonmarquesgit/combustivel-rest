@@ -1,0 +1,1455 @@
+{
+	"info": {
+		"_postman_id": "fe6c0cbd-9e2b-41db-b755-bc30d8da900c",
+		"name": "Combustivel",
+		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
+	},
+	"item": [
+		{
+			"name": "local",
+			"item": [
+				{
+					"name": "User",
+					"item": [
+						{
+							"name": "Authentication",
+							"event": [
+								{
+									"listen": "test",
+									"script": {
+										"id": "4909945d-a7e4-4aa9-bc9c-d79c96f0fb6d",
+										"exec": [
+											"var jsonData = JSON.parse(responseBody);\r",
+											"postman.setEnvironmentVariable(\"token\", jsonData.token);"
+										],
+										"type": "text/javascript"
+									}
+								}
+							],
+							"request": {
+								"method": "POST",
+								"header": [
+									{
+										"key": "Content-Type",
+										"value": "application/json"
+									}
+								],
+								"body": {
+									"mode": "raw",
+									"raw": "{\n\t\"email\": \"analyst@indra.com\",\n\t\"password\": \"123456\"\n}"
+								},
+								"url": {
+									"raw": "http://localhost:8888/auth",
+									"protocol": "http",
+									"host": [
+										"localhost"
+									],
+									"port": "8888",
+									"path": [
+										"auth"
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "Create User",
+							"request": {
+								"method": "POST",
+								"header": [
+									{
+										"key": "Content-Type",
+										"value": "application/json"
+									},
+									{
+										"key": "Authorization",
+										"value": "eyJhbGciOiJIUzUxMiJ9.eyJzdWIiOiJhZG1pbkBpbmRyYS5jb20iLCJjcmVhdGVkIjoxNTU5OTI5NTY0NTUwLCJleHAiOjE1NjA1MzQzNjR9.Q3SafCZIVpoUKW-Edg47hFcFAvb2VAv3JYvzFcDEBrLRN3DXZmo1AKSdlheLn_qx-3PHq7TOJFnXH-gu5RjNNQ"
+									}
+								],
+								"body": {
+									"mode": "raw",
+									"raw": "{\n\t\"email\": \"analyst_2@indra.com\",\n\t\"password\": \"123456\",\n\t\"profile\": \"ROLE_ANALYST\"\n}"
+								},
+								"url": {
+									"raw": "http://localhost:8888/user",
+									"protocol": "http",
+									"host": [
+										"localhost"
+									],
+									"port": "8888",
+									"path": [
+										"user"
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "Update User",
+							"request": {
+								"method": "PUT",
+								"header": [
+									{
+										"key": "Content-Type",
+										"value": "application/json"
+									},
+									{
+										"key": "Authorization",
+										"value": "eyJhbGciOiJIUzUxMiJ9.eyJzdWIiOiJhZG1pbkByZW50YWNhci5jb20iLCJjcmVhdGVkIjoxNTU1MjQ4Nzg4NTkwLCJleHAiOjE1NTU4NTM1ODh9.fWXdK-2Q677ieSl1sjOW65STJSpp9XLZNdo1P8Sya_vxP_QwCr9vX-2xGbGwf-prVYe82kmE5UjIPCxKFR8rzA"
+									}
+								],
+								"body": {
+									"mode": "raw",
+									"raw": "{\n\t\"id\": \"2\",\n\t\"email\": \"analyst_3@indra.com\",\n\t\"password\": \"123456\",\n\t\"profile\": \"ROLE_ANALYST\"\n}"
+								},
+								"url": {
+									"raw": "http://localhost:8888/user",
+									"protocol": "http",
+									"host": [
+										"localhost"
+									],
+									"port": "8888",
+									"path": [
+										"user"
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "Find One User By Id",
+							"request": {
+								"method": "GET",
+								"header": [
+									{
+										"key": "Authorization",
+										"value": "eyJhbGciOiJIUzUxMiJ9.eyJzdWIiOiJhZG1pbkByZW50YWNhci5jb20iLCJjcmVhdGVkIjoxNTU1MjQ4Nzg4NTkwLCJleHAiOjE1NTU4NTM1ODh9.fWXdK-2Q677ieSl1sjOW65STJSpp9XLZNdo1P8Sya_vxP_QwCr9vX-2xGbGwf-prVYe82kmE5UjIPCxKFR8rzA"
+									}
+								],
+								"url": {
+									"raw": "http://localhost:8888/user/2",
+									"protocol": "http",
+									"host": [
+										"localhost"
+									],
+									"port": "8888",
+									"path": [
+										"user",
+										"2"
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "Find Users Pages",
+							"request": {
+								"method": "GET",
+								"header": [
+									{
+										"key": "Authorization",
+										"value": "{{token}}"
+									}
+								],
+								"url": {
+									"raw": "http://localhost:8888/user/0/10",
+									"protocol": "http",
+									"host": [
+										"localhost"
+									],
+									"port": "8888",
+									"path": [
+										"user",
+										"0",
+										"10"
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "Delete User",
+							"request": {
+								"method": "DELETE",
+								"header": [
+									{
+										"key": "Authorization",
+										"value": "{{token}}"
+									}
+								],
+								"body": {
+									"mode": "formdata",
+									"formdata": []
+								},
+								"url": {
+									"raw": "http://localhost:8888/user/4",
+									"protocol": "http",
+									"host": [
+										"localhost"
+									],
+									"port": "8888",
+									"path": [
+										"user",
+										"4"
+									]
+								}
+							},
+							"response": []
+						}
+					],
+					"_postman_isSubFolder": true
+				},
+				{
+					"name": "Import File",
+					"item": [
+						{
+							"name": "ImportFile",
+							"request": {
+								"method": "POST",
+								"header": [
+									{
+										"key": "Authorization",
+										"value": "{{token}}",
+										"type": "text"
+									}
+								],
+								"body": {
+									"mode": "formdata",
+									"formdata": [
+										{
+											"key": "file",
+											"type": "file",
+											"src": "/C:/Users/Anderson/Desktop/2018-1.csv"
+										}
+									]
+								},
+								"url": {
+									"raw": "http://localhost:8888/upload?",
+									"protocol": "http",
+									"host": [
+										"localhost"
+									],
+									"port": "8888",
+									"path": [
+										"upload"
+									],
+									"query": [
+										{
+											"key": "Authorization",
+											"value": "{{token}}",
+											"disabled": true
+										}
+									]
+								}
+							},
+							"response": []
+						}
+					],
+					"_postman_isSubFolder": true
+				},
+				{
+					"name": "Stats",
+					"item": [
+						{
+							"name": "Average Price Value By City",
+							"protocolProfileBehavior": {
+								"disableBodyPruning": true
+							},
+							"request": {
+								"method": "GET",
+								"header": [
+									{
+										"key": "Authorization",
+										"type": "text",
+										"value": "{{token}}"
+									},
+									{
+										"key": "Content-Type",
+										"name": "Content-Type",
+										"value": "application/json",
+										"type": "text"
+									}
+								],
+								"body": {
+									"mode": "raw",
+									"raw": "{\n\t\"city\": \"BRASILIA\"\n}"
+								},
+								"url": {
+									"raw": "http://localhost:8888/stats/averages?",
+									"protocol": "http",
+									"host": [
+										"localhost"
+									],
+									"port": "8888",
+									"path": [
+										"stats",
+										"averages"
+									],
+									"query": [
+										{
+											"key": "Authorization",
+											"value": "{{token}}",
+											"disabled": true
+										}
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "Average Values By City",
+							"protocolProfileBehavior": {
+								"disableBodyPruning": true
+							},
+							"request": {
+								"method": "GET",
+								"header": [
+									{
+										"key": "Authorization",
+										"type": "text",
+										"value": "{{token}}"
+									},
+									{
+										"key": "Content-Type",
+										"name": "Content-Type",
+										"type": "text",
+										"value": "application/json"
+									}
+								],
+								"body": {
+									"mode": "raw",
+									"raw": ""
+								},
+								"url": {
+									"raw": "http://localhost:8888/stats/averages/cities?",
+									"protocol": "http",
+									"host": [
+										"localhost"
+									],
+									"port": "8888",
+									"path": [
+										"stats",
+										"averages",
+										"cities"
+									],
+									"query": [
+										{
+											"key": "Authorization",
+											"value": "{{token}}",
+											"disabled": true
+										}
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "Average Values By Flag",
+							"protocolProfileBehavior": {
+								"disableBodyPruning": true
+							},
+							"request": {
+								"method": "GET",
+								"header": [
+									{
+										"key": "Authorization",
+										"type": "text",
+										"value": "{{token}}"
+									},
+									{
+										"key": "Content-Type",
+										"name": "Content-Type",
+										"type": "text",
+										"value": "application/json"
+									}
+								],
+								"body": {
+									"mode": "raw",
+									"raw": ""
+								},
+								"url": {
+									"raw": "http://localhost:8888/stats/averages/flags?",
+									"protocol": "http",
+									"host": [
+										"localhost"
+									],
+									"port": "8888",
+									"path": [
+										"stats",
+										"averages",
+										"flags"
+									],
+									"query": [
+										{
+											"key": "Authorization",
+											"value": "{{token}}",
+											"disabled": true
+										}
+									]
+								}
+							},
+							"response": []
+						}
+					],
+					"_postman_isSubFolder": true
+				},
+				{
+					"name": "Products",
+					"item": [
+						{
+							"name": "Find All By Region",
+							"protocolProfileBehavior": {
+								"disableBodyPruning": true
+							},
+							"request": {
+								"method": "GET",
+								"header": [
+									{
+										"key": "Authorization",
+										"type": "text",
+										"value": "{{token}}"
+									},
+									{
+										"key": "Content-Type",
+										"name": "Content-Type",
+										"type": "text",
+										"value": "application/json"
+									}
+								],
+								"body": {
+									"mode": "raw",
+									"raw": "{\n\t\"region\": \"CO\"\n}"
+								},
+								"url": {
+									"raw": "http://localhost:8888/products/region?",
+									"protocol": "http",
+									"host": [
+										"localhost"
+									],
+									"port": "8888",
+									"path": [
+										"products",
+										"region"
+									],
+									"query": [
+										{
+											"key": "Authorization",
+											"value": "{{token}}",
+											"disabled": true
+										}
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "Find All By Distribuidora",
+							"protocolProfileBehavior": {
+								"disableBodyPruning": true
+							},
+							"request": {
+								"method": "GET",
+								"header": [
+									{
+										"key": "Authorization",
+										"type": "text",
+										"value": "{{token}}"
+									},
+									{
+										"key": "Content-Type",
+										"name": "Content-Type",
+										"type": "text",
+										"value": "application/json"
+									}
+								],
+								"body": {
+									"mode": "raw",
+									"raw": "{\n\t\"resaleDesc\": \"AUTO POSTO BRAGA LTDA\"\n}"
+								},
+								"url": {
+									"raw": "http://localhost:8888/products/resale?",
+									"protocol": "http",
+									"host": [
+										"localhost"
+									],
+									"port": "8888",
+									"path": [
+										"products",
+										"resale"
+									],
+									"query": [
+										{
+											"key": "Authorization",
+											"value": "{{token}}",
+											"disabled": true
+										}
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "Find All By Date Collect",
+							"protocolProfileBehavior": {
+								"disableBodyPruning": true
+							},
+							"request": {
+								"method": "GET",
+								"header": [
+									{
+										"key": "Authorization",
+										"type": "text",
+										"value": "{{token}}"
+									},
+									{
+										"key": "Content-Type",
+										"name": "Content-Type",
+										"type": "text",
+										"value": "application/json"
+									},
+									{
+										"key": "",
+										"value": "",
+										"type": "text"
+									}
+								],
+								"body": {
+									"mode": "raw",
+									"raw": ""
+								},
+								"url": {
+									"raw": "http://localhost:8888/products/collections?dtCollect=2018-01-03",
+									"protocol": "http",
+									"host": [
+										"localhost"
+									],
+									"port": "8888",
+									"path": [
+										"products",
+										"collections"
+									],
+									"query": [
+										{
+											"key": "dtCollect",
+											"value": "2018-01-03"
+										},
+										{
+											"key": "Authorization",
+											"value": "{{token}}",
+											"disabled": true
+										}
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "Create Prices",
+							"request": {
+								"method": "POST",
+								"header": [
+									{
+										"key": "Authorization",
+										"value": "{{token}}",
+										"type": "text"
+									},
+									{
+										"key": "Content-Type",
+										"name": "Content-Type",
+										"value": "application/json",
+										"type": "text"
+									}
+								],
+								"body": {
+									"mode": "raw",
+									"raw": "{\n\t\"descProduct\": \"DIESEL\",\n    \"purchaseValue\": 3.1505,\n    \"salesValue\": 3.489,\n    \"dtCollect\": \"2019-10-03\",\n    \"flag\": \"PETROBRAS DISTRIBUIDORA S.A.\",\n    \"unity\": \"R$ / litro\",\n    \"codResale\": \"7990\",\n    \"descResale\": \"AUTO POSTO JB LIMITADA\",\n    \"descCity\": \"BRASILIA\",\n    \"siglaRegion\": \"CO\",\n    \"descState\": \"DF\"\n}"
+								},
+								"url": {
+									"raw": "http://localhost:8888/products",
+									"protocol": "http",
+									"host": [
+										"localhost"
+									],
+									"port": "8888",
+									"path": [
+										"products"
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "Update Prices",
+							"request": {
+								"method": "PUT",
+								"header": [
+									{
+										"key": "Authorization",
+										"type": "text",
+										"value": "{{token}}"
+									},
+									{
+										"key": "Content-Type",
+										"name": "Content-Type",
+										"type": "text",
+										"value": "application/json"
+									}
+								],
+								"body": {
+									"mode": "raw",
+									"raw": "{\n\t\"productId\": \"1\",\n    \"purchaseValue\": 3.133,\n    \"salesValue\": 4.222\n}"
+								},
+								"url": {
+									"raw": "http://localhost:8888/products",
+									"protocol": "http",
+									"host": [
+										"localhost"
+									],
+									"port": "8888",
+									"path": [
+										"products"
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "Find By Id",
+							"protocolProfileBehavior": {
+								"disableBodyPruning": true
+							},
+							"request": {
+								"method": "GET",
+								"header": [
+									{
+										"key": "Authorization",
+										"type": "text",
+										"value": "{{token}}"
+									},
+									{
+										"key": "Content-Type",
+										"name": "Content-Type",
+										"type": "text",
+										"value": "application/json"
+									}
+								],
+								"body": {
+									"mode": "raw",
+									"raw": ""
+								},
+								"url": {
+									"raw": "http://localhost:8888/products/1",
+									"protocol": "http",
+									"host": [
+										"localhost"
+									],
+									"port": "8888",
+									"path": [
+										"products",
+										"1"
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "Delete By Id",
+							"request": {
+								"method": "DELETE",
+								"header": [
+									{
+										"key": "Authorization",
+										"type": "text",
+										"value": "{{token}}"
+									},
+									{
+										"key": "Content-Type",
+										"name": "Content-Type",
+										"type": "text",
+										"value": "application/json"
+									}
+								],
+								"body": {
+									"mode": "raw",
+									"raw": ""
+								},
+								"url": {
+									"raw": "http://localhost:8888/products/1",
+									"protocol": "http",
+									"host": [
+										"localhost"
+									],
+									"port": "8888",
+									"path": [
+										"products",
+										"1"
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "Find Products Pages",
+							"request": {
+								"method": "GET",
+								"header": [
+									{
+										"key": "Authorization",
+										"value": "{{token}}"
+									}
+								],
+								"url": {
+									"raw": "http://localhost:8888/products/0/10",
+									"protocol": "http",
+									"host": [
+										"localhost"
+									],
+									"port": "8888",
+									"path": [
+										"products",
+										"0",
+										"10"
+									]
+								}
+							},
+							"response": []
+						}
+					],
+					"_postman_isSubFolder": true
+				}
+			]
+		},
+		{
+			"name": "heroku",
+			"item": [
+				{
+					"name": "User",
+					"item": [
+						{
+							"name": "Authentication",
+							"event": [
+								{
+									"listen": "test",
+									"script": {
+										"id": "4909945d-a7e4-4aa9-bc9c-d79c96f0fb6d",
+										"exec": [
+											"var jsonData = JSON.parse(responseBody);\r",
+											"postman.setEnvironmentVariable(\"token\", jsonData.token);"
+										],
+										"type": "text/javascript"
+									}
+								}
+							],
+							"request": {
+								"method": "POST",
+								"header": [
+									{
+										"key": "Content-Type",
+										"value": "application/json"
+									}
+								],
+								"body": {
+									"mode": "raw",
+									"raw": "{\n\t\"email\": \"analyst@indra.com\",\n\t\"password\": \"123456\"\n}"
+								},
+								"url": {
+									"raw": "https://combustivel-rest.herokuapp.com/auth",
+									"protocol": "https",
+									"host": [
+										"combustivel-rest",
+										"herokuapp",
+										"com"
+									],
+									"path": [
+										"auth"
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "Create User",
+							"request": {
+								"method": "POST",
+								"header": [
+									{
+										"key": "Content-Type",
+										"value": "application/json"
+									},
+									{
+										"key": "Authorization",
+										"value": "eyJhbGciOiJIUzUxMiJ9.eyJzdWIiOiJhZG1pbkBpbmRyYS5jb20iLCJjcmVhdGVkIjoxNTU5OTI5NTY0NTUwLCJleHAiOjE1NjA1MzQzNjR9.Q3SafCZIVpoUKW-Edg47hFcFAvb2VAv3JYvzFcDEBrLRN3DXZmo1AKSdlheLn_qx-3PHq7TOJFnXH-gu5RjNNQ"
+									}
+								],
+								"body": {
+									"mode": "raw",
+									"raw": "{\n\t\"email\": \"analyst_2@indra.com\",\n\t\"password\": \"123456\",\n\t\"profile\": \"ROLE_ANALYST\"\n}"
+								},
+								"url": {
+									"raw": "https://combustivel-rest.herokuapp.com/user",
+									"protocol": "https",
+									"host": [
+										"combustivel-rest",
+										"herokuapp",
+										"com"
+									],
+									"path": [
+										"user"
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "Update User",
+							"request": {
+								"method": "PUT",
+								"header": [
+									{
+										"key": "Content-Type",
+										"value": "application/json"
+									},
+									{
+										"key": "Authorization",
+										"value": "eyJhbGciOiJIUzUxMiJ9.eyJzdWIiOiJhZG1pbkByZW50YWNhci5jb20iLCJjcmVhdGVkIjoxNTU1MjQ4Nzg4NTkwLCJleHAiOjE1NTU4NTM1ODh9.fWXdK-2Q677ieSl1sjOW65STJSpp9XLZNdo1P8Sya_vxP_QwCr9vX-2xGbGwf-prVYe82kmE5UjIPCxKFR8rzA"
+									}
+								],
+								"body": {
+									"mode": "raw",
+									"raw": "{\n\t\"id\": \"2\",\n\t\"email\": \"analyst_3@indra.com\",\n\t\"password\": \"123456\",\n\t\"profile\": \"ROLE_ANALYST\"\n}"
+								},
+								"url": {
+									"raw": "https://combustivel-rest.herokuapp.com/user",
+									"protocol": "https",
+									"host": [
+										"combustivel-rest",
+										"herokuapp",
+										"com"
+									],
+									"path": [
+										"user"
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "Find One User By Id",
+							"request": {
+								"method": "GET",
+								"header": [
+									{
+										"key": "Authorization",
+										"value": "eyJhbGciOiJIUzUxMiJ9.eyJzdWIiOiJhZG1pbkByZW50YWNhci5jb20iLCJjcmVhdGVkIjoxNTU1MjQ4Nzg4NTkwLCJleHAiOjE1NTU4NTM1ODh9.fWXdK-2Q677ieSl1sjOW65STJSpp9XLZNdo1P8Sya_vxP_QwCr9vX-2xGbGwf-prVYe82kmE5UjIPCxKFR8rzA"
+									}
+								],
+								"url": {
+									"raw": "https://combustivel-rest.herokuapp.com/user/2",
+									"protocol": "https",
+									"host": [
+										"combustivel-rest",
+										"herokuapp",
+										"com"
+									],
+									"path": [
+										"user",
+										"2"
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "Find Users Pages",
+							"request": {
+								"method": "GET",
+								"header": [
+									{
+										"key": "Authorization",
+										"value": "{{token}}"
+									}
+								],
+								"url": {
+									"raw": "https://combustivel-rest.herokuapp.com/user/0/10",
+									"protocol": "https",
+									"host": [
+										"combustivel-rest",
+										"herokuapp",
+										"com"
+									],
+									"path": [
+										"user",
+										"0",
+										"10"
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "Delete User",
+							"request": {
+								"method": "DELETE",
+								"header": [
+									{
+										"key": "Authorization",
+										"value": "{{token}}"
+									}
+								],
+								"body": {
+									"mode": "formdata",
+									"formdata": []
+								},
+								"url": {
+									"raw": "https://combustivel-rest.herokuapp.com/user/4",
+									"protocol": "https",
+									"host": [
+										"combustivel-rest",
+										"herokuapp",
+										"com"
+									],
+									"path": [
+										"user",
+										"4"
+									]
+								}
+							},
+							"response": []
+						}
+					],
+					"_postman_isSubFolder": true
+				},
+				{
+					"name": "Import File",
+					"item": [
+						{
+							"name": "ImportFile",
+							"request": {
+								"method": "POST",
+								"header": [
+									{
+										"key": "Authorization",
+										"value": "{{token}}",
+										"type": "text"
+									}
+								],
+								"body": {
+									"mode": "formdata",
+									"formdata": [
+										{
+											"key": "file",
+											"type": "file",
+											"src": "/C:/Users/Anderson/Desktop/2018-1.csv"
+										}
+									]
+								},
+								"url": {
+									"raw": "https://combustivel-rest.herokuapp.com/upload?",
+									"protocol": "https",
+									"host": [
+										"combustivel-rest",
+										"herokuapp",
+										"com"
+									],
+									"path": [
+										"upload"
+									],
+									"query": [
+										{
+											"key": "Authorization",
+											"value": "{{token}}",
+											"disabled": true
+										}
+									]
+								}
+							},
+							"response": []
+						}
+					],
+					"_postman_isSubFolder": true
+				},
+				{
+					"name": "Stats",
+					"item": [
+						{
+							"name": "Average Price Value By City",
+							"protocolProfileBehavior": {
+								"disableBodyPruning": true
+							},
+							"request": {
+								"method": "GET",
+								"header": [
+									{
+										"key": "Authorization",
+										"type": "text",
+										"value": "{{token}}"
+									},
+									{
+										"key": "Content-Type",
+										"name": "Content-Type",
+										"value": "application/json",
+										"type": "text"
+									}
+								],
+								"body": {
+									"mode": "raw",
+									"raw": "{\n\t\"city\": \"BRASILIA\"\n}"
+								},
+								"url": {
+									"raw": "https://combustivel-rest.herokuapp.com/stats/averages?",
+									"protocol": "https",
+									"host": [
+										"combustivel-rest",
+										"herokuapp",
+										"com"
+									],
+									"path": [
+										"stats",
+										"averages"
+									],
+									"query": [
+										{
+											"key": "Authorization",
+											"value": "{{token}}",
+											"disabled": true
+										}
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "Average Values By City",
+							"protocolProfileBehavior": {
+								"disableBodyPruning": true
+							},
+							"request": {
+								"method": "GET",
+								"header": [
+									{
+										"key": "Authorization",
+										"type": "text",
+										"value": "{{token}}"
+									},
+									{
+										"key": "Content-Type",
+										"name": "Content-Type",
+										"type": "text",
+										"value": "application/json"
+									}
+								],
+								"body": {
+									"mode": "raw",
+									"raw": ""
+								},
+								"url": {
+									"raw": "https://combustivel-rest.herokuapp.com/stats/averages/cities?",
+									"protocol": "https",
+									"host": [
+										"combustivel-rest",
+										"herokuapp",
+										"com"
+									],
+									"path": [
+										"stats",
+										"averages",
+										"cities"
+									],
+									"query": [
+										{
+											"key": "Authorization",
+											"value": "{{token}}",
+											"disabled": true
+										}
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "Average Values By Flag",
+							"protocolProfileBehavior": {
+								"disableBodyPruning": true
+							},
+							"request": {
+								"method": "GET",
+								"header": [
+									{
+										"key": "Authorization",
+										"type": "text",
+										"value": "{{token}}"
+									},
+									{
+										"key": "Content-Type",
+										"name": "Content-Type",
+										"type": "text",
+										"value": "application/json"
+									}
+								],
+								"body": {
+									"mode": "raw",
+									"raw": ""
+								},
+								"url": {
+									"raw": "https://combustivel-rest.herokuapp.com/stats/averages/flags?",
+									"protocol": "https",
+									"host": [
+										"combustivel-rest",
+										"herokuapp",
+										"com"
+									],
+									"path": [
+										"stats",
+										"averages",
+										"flags"
+									],
+									"query": [
+										{
+											"key": "Authorization",
+											"value": "{{token}}",
+											"disabled": true
+										}
+									]
+								}
+							},
+							"response": []
+						}
+					],
+					"_postman_isSubFolder": true
+				},
+				{
+					"name": "Products",
+					"item": [
+						{
+							"name": "Find All By Region",
+							"protocolProfileBehavior": {
+								"disableBodyPruning": true
+							},
+							"request": {
+								"method": "GET",
+								"header": [
+									{
+										"key": "Authorization",
+										"type": "text",
+										"value": "{{token}}"
+									},
+									{
+										"key": "Content-Type",
+										"name": "Content-Type",
+										"type": "text",
+										"value": "application/json"
+									}
+								],
+								"body": {
+									"mode": "raw",
+									"raw": "{\n\t\"region\": \"CO\"\n}"
+								},
+								"url": {
+									"raw": "https://combustivel-rest.herokuapp.com/products/region?",
+									"protocol": "https",
+									"host": [
+										"combustivel-rest",
+										"herokuapp",
+										"com"
+									],
+									"path": [
+										"products",
+										"region"
+									],
+									"query": [
+										{
+											"key": "Authorization",
+											"value": "{{token}}",
+											"disabled": true
+										}
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "Find All By Distribuidora",
+							"protocolProfileBehavior": {
+								"disableBodyPruning": true
+							},
+							"request": {
+								"method": "GET",
+								"header": [
+									{
+										"key": "Authorization",
+										"type": "text",
+										"value": "{{token}}"
+									},
+									{
+										"key": "Content-Type",
+										"name": "Content-Type",
+										"type": "text",
+										"value": "application/json"
+									}
+								],
+								"body": {
+									"mode": "raw",
+									"raw": "{\n\t\"resaleDesc\": \"AUTO POSTO BRAGA LTDA\"\n}"
+								},
+								"url": {
+									"raw": "https://combustivel-rest.herokuapp.com/products/resale?",
+									"protocol": "https",
+									"host": [
+										"combustivel-rest",
+										"herokuapp",
+										"com"
+									],
+									"path": [
+										"products",
+										"resale"
+									],
+									"query": [
+										{
+											"key": "Authorization",
+											"value": "{{token}}",
+											"disabled": true
+										}
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "Find All By Date Collect",
+							"protocolProfileBehavior": {
+								"disableBodyPruning": true
+							},
+							"request": {
+								"method": "GET",
+								"header": [
+									{
+										"key": "Authorization",
+										"type": "text",
+										"value": "{{token}}"
+									},
+									{
+										"key": "Content-Type",
+										"name": "Content-Type",
+										"type": "text",
+										"value": "application/json"
+									},
+									{
+										"key": "",
+										"value": "",
+										"type": "text"
+									}
+								],
+								"body": {
+									"mode": "raw",
+									"raw": ""
+								},
+								"url": {
+									"raw": "https://combustivel-rest.herokuapp.com/products/collections?dtCollect=2018-01-03",
+									"protocol": "https",
+									"host": [
+										"combustivel-rest",
+										"herokuapp",
+										"com"
+									],
+									"path": [
+										"products",
+										"collections"
+									],
+									"query": [
+										{
+											"key": "dtCollect",
+											"value": "2018-01-03"
+										},
+										{
+											"key": "Authorization",
+											"value": "{{token}}",
+											"disabled": true
+										}
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "Create Prices",
+							"request": {
+								"method": "POST",
+								"header": [
+									{
+										"key": "Authorization",
+										"value": "{{token}}",
+										"type": "text"
+									},
+									{
+										"key": "Content-Type",
+										"name": "Content-Type",
+										"value": "application/json",
+										"type": "text"
+									}
+								],
+								"body": {
+									"mode": "raw",
+									"raw": "{\n\t\"descProduct\": \"DIESEL\",\n    \"purchaseValue\": 3.1505,\n    \"salesValue\": 3.489,\n    \"dtCollect\": \"2019-10-03\",\n    \"flag\": \"PETROBRAS DISTRIBUIDORA S.A.\",\n    \"unity\": \"R$ / litro\",\n    \"codResale\": \"7990\",\n    \"descResale\": \"AUTO POSTO JB LIMITADA\",\n    \"descCity\": \"BRASILIA\",\n    \"siglaRegion\": \"CO\",\n    \"descState\": \"DF\"\n}"
+								},
+								"url": {
+									"raw": "https://combustivel-rest.herokuapp.com/products",
+									"protocol": "https",
+									"host": [
+										"combustivel-rest",
+										"herokuapp",
+										"com"
+									],
+									"path": [
+										"products"
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "Update Prices",
+							"request": {
+								"method": "PUT",
+								"header": [
+									{
+										"key": "Authorization",
+										"type": "text",
+										"value": "{{token}}"
+									},
+									{
+										"key": "Content-Type",
+										"name": "Content-Type",
+										"type": "text",
+										"value": "application/json"
+									}
+								],
+								"body": {
+									"mode": "raw",
+									"raw": "{\n\t\"productId\": \"1\",\n    \"purchaseValue\": 3.133,\n    \"salesValue\": 4.222\n}"
+								},
+								"url": {
+									"raw": "https://combustivel-rest.herokuapp.com/products",
+									"protocol": "https",
+									"host": [
+										"combustivel-rest",
+										"herokuapp",
+										"com"
+									],
+									"path": [
+										"products"
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "Find By Id",
+							"protocolProfileBehavior": {
+								"disableBodyPruning": true
+							},
+							"request": {
+								"method": "GET",
+								"header": [
+									{
+										"key": "Authorization",
+										"type": "text",
+										"value": "{{token}}"
+									},
+									{
+										"key": "Content-Type",
+										"name": "Content-Type",
+										"type": "text",
+										"value": "application/json"
+									}
+								],
+								"body": {
+									"mode": "raw",
+									"raw": ""
+								},
+								"url": {
+									"raw": "https://combustivel-rest.herokuapp.com/products/1",
+									"protocol": "https",
+									"host": [
+										"combustivel-rest",
+										"herokuapp",
+										"com"
+									],
+									"path": [
+										"products",
+										"1"
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "Delete By Id",
+							"request": {
+								"method": "DELETE",
+								"header": [
+									{
+										"key": "Authorization",
+										"type": "text",
+										"value": "{{token}}"
+									},
+									{
+										"key": "Content-Type",
+										"name": "Content-Type",
+										"type": "text",
+										"value": "application/json"
+									}
+								],
+								"body": {
+									"mode": "raw",
+									"raw": ""
+								},
+								"url": {
+									"raw": "https://combustivel-rest.herokuapp.com/products/1",
+									"protocol": "https",
+									"host": [
+										"combustivel-rest",
+										"herokuapp",
+										"com"
+									],
+									"path": [
+										"products",
+										"1"
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "Find Products Pages",
+							"request": {
+								"method": "GET",
+								"header": [
+									{
+										"key": "Authorization",
+										"value": "{{token}}"
+									}
+								],
+								"url": {
+									"raw": "https://combustivel-rest.herokuapp.com/products/0/10",
+									"protocol": "https",
+									"host": [
+										"combustivel-rest",
+										"herokuapp",
+										"com"
+									],
+									"path": [
+										"products",
+										"0",
+										"10"
+									]
+								}
+							},
+							"response": []
+						}
+					],
+					"_postman_isSubFolder": true
+				}
+			]
+		}
+	]
+}
