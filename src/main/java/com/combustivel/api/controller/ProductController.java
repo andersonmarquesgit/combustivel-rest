@@ -18,6 +18,7 @@ import org.springframework.web.bind.annotation.RestController;
 
 import com.combustivel.api.entity.Product;
 import com.combustivel.api.request.RegionRequest;
+import com.combustivel.api.request.ResaleRequest;
 import com.combustivel.api.response.Response;
 import com.combustivel.api.service.ProductService;
 
@@ -38,12 +39,12 @@ public class ProductController {
 	
 	@GetMapping(value = "/region")
 	@PreAuthorize("hasAnyRole('ANALYST')")
-	@ApiOperation(value = "Implementar recurso que retorne todas as informações importadas por sigla da região", consumes = MediaType.APPLICATION_JSON_VALUE, produces = MediaType.APPLICATION_JSON_VALUE)
+	@ApiOperation(value = "Recurso que retorna todas as informações importadas por sigla da região", consumes = MediaType.APPLICATION_JSON_VALUE, produces = MediaType.APPLICATION_JSON_VALUE)
 	@ApiResponses(@ApiResponse(code = 200, message = "ok", response = Product.class))
 	public ResponseEntity<?> findAllByRegion(HttpServletRequest request, 
 			@ApiParam(
 				    value="RegionRequest", 
-				    name="city", 
+				    name="region", 
 				    required=true)
 			@RequestBody RegionRequest region, BindingResult result){
 		
@@ -58,7 +59,38 @@ public class ProductController {
 			}
 			
 			products = productService.findAllByRegion(region.getRegion());
+			
+		} catch (Exception e) {
+			response.getErrors().add(e.getMessage());
+			return ResponseEntity.badRequest().body(response);
+		}
+
+		response.setData(products);
+		return ResponseEntity.ok(response);
+	}
+	
+	@GetMapping(value = "/resale")
+	@PreAuthorize("hasAnyRole('ANALYST')")
+	@ApiOperation(value = "Recurso que retorna os dados agrupados por distribuidora", consumes = MediaType.APPLICATION_JSON_VALUE, produces = MediaType.APPLICATION_JSON_VALUE)
+	@ApiResponses(@ApiResponse(code = 200, message = "ok", response = Product.class))
+	public ResponseEntity<?> findAllByResale(HttpServletRequest request, 
+			@ApiParam(
+				    value="ResaleRequest", 
+				    name="resale", 
+				    required=true)
+			@RequestBody ResaleRequest resale, BindingResult result){
 		
+		Response<List<Product>> response = new Response<List<Product>>();
+		List<Product> products;
+		
+		try {
+			this.validateResaleRequest(resale, result);
+			if (result.hasErrors()) {
+				result.getAllErrors().forEach(error -> response.getErrors().add(error.getDefaultMessage()));
+				return ResponseEntity.badRequest().body(response);
+			}
+			
+			products = productService.findAllByResale(resale.getResaleDesc());
 			
 		} catch (Exception e) {
 			response.getErrors().add(e.getMessage());
@@ -72,6 +104,12 @@ public class ProductController {
 	private void validateRegionRequest(RegionRequest region, BindingResult result) {
 		if (region.getRegion() == null || region.getRegion().isEmpty()) {
 			result.addError(new ObjectError("RegionRequest", "Region no information"));
+		}
+	}
+	
+	private void validateResaleRequest(ResaleRequest resale, BindingResult result) {
+		if (resale.getResaleDesc() == null || resale.getResaleDesc().isEmpty()) {
+			result.addError(new ObjectError("ResaleRequest", "Resale no information"));
 		}
 	}
 }

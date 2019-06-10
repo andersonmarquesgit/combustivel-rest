@@ -9,4 +9,6 @@ public interface ProductService {
 	void createProducts(List<Product> products);
 
 	List<Product> findAllByRegion(String region);
+	
+	List<Product> findAllByResale(String resaleDesc);
 }

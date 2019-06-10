@@ -37,4 +37,9 @@ public interface ProductRepository  extends JpaRepository<Product, String> {
 			+ " JOIN c.state s ON c.state.id = s.id"
 			+ " WHERE s.region = :region")
 	List<Product> findAllByRegion(@Param("region") String region);
+	
+	@Query("SELECT p FROM Product p"
+			+ " JOIN p.resale r ON p.resale.id = r.id"
+			+ " WHERE r.desc = :resaleDesc")
+	List<Product> findAllByResale(@Param("resaleDesc") String resaleDesc);
 }
