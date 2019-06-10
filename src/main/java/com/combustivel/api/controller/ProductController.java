@@ -16,12 +16,13 @@ import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.combustivel.api.entity.Product;
-import com.combustivel.api.entity.User;
+import com.combustivel.api.request.PriceRequest;
 import com.combustivel.api.request.ProductRequest;
 import com.combustivel.api.request.RegionRequest;
 import com.combustivel.api.request.ResaleRequest;
@@ -153,7 +154,7 @@ public class ProductController {
 											// usuários.
 	@ApiOperation(value = "Recurso para CRUD de histórico de preço de combustível", 
 		consumes = MediaType.APPLICATION_JSON_VALUE, produces = MediaType.APPLICATION_JSON_VALUE)
-	@ApiResponses(@ApiResponse(code = 201, message = "Novo preço criado", response = User.class, 
+	@ApiResponses(@ApiResponse(code = 201, message = "Novo preço criado", response = Product.class, 
 		responseHeaders = @ResponseHeader(name = "User", description = "Preço criado", response = Product.class)))
 	public ResponseEntity<Response<Product>> create(HttpServletRequest request, 
 			@ApiParam(
@@ -194,12 +195,100 @@ public class ProductController {
 		return new ResponseEntity<>(response, HttpStatus.CREATED);
 	}
 	
-	private void validateCreateProduct(ProductRequest productRequest, BindingResult result) {
-		if (productRequest == null) {
-			result.addError(new ObjectError("Product", "Email no information"));
+	@PutMapping
+	@PreAuthorize("hasAnyRole('ANALYST')") // Autorização com base no perfil. Nesse caso apenas ADMIN podem atualizar usuários.
+	@ApiOperation(value = "Atualização de preços", consumes = MediaType.APPLICATION_JSON_VALUE, produces = MediaType.APPLICATION_JSON_VALUE)
+	@ApiResponses(@ApiResponse(code = 200, message = "Preço atualizado", response = Product.class, 
+		responseHeaders = @ResponseHeader(name = "Location", description = "uri do preço atualizado", response = String.class)))
+	public ResponseEntity<Response<Product>> update(HttpServletRequest request, 
+			@ApiParam(
+				    value="PriceRequest", 
+				    name="priceRequest", 
+				    required=true)
+			@RequestBody PriceRequest priceRequest,
+			BindingResult result) {
+		Response<Product> response = new Response<Product>();
+		try {
+			validateUpdatePrices(priceRequest, result);
+			if (result.hasErrors()) {
+				result.getAllErrors().forEach(error -> response.getErrors().add(error.getDefaultMessage()));
+				return ResponseEntity.badRequest().body(response);
+			}
+			
+			Product product = this.productService.findById(priceRequest.getProductId());
+			if(product == null) {
+				result.addError(new ObjectError("Product", "Product no exists"));
+				result.getAllErrors().forEach(error -> response.getErrors().add(error.getDefaultMessage()));
+				return ResponseEntity.badRequest().body(response);
+			}else {
+				product.setPurchaseValue(priceRequest.getPurchaseValue());
+				product.setSalesValue(priceRequest.getSalesValue());
+			}
+			
+			Product productUpdated = this.productService.createOrUpdate(product);
+			response.setData(productUpdated);
+		} catch (Exception e) {
+			response.getErrors().add(e.getMessage());
+			return ResponseEntity.badRequest().body(response);
 		}
+		return ResponseEntity.ok(response);
 	}
 	
+	private void validateUpdatePrices(PriceRequest priceRequest, BindingResult result) {
+		if (priceRequest.getProductId() == null || priceRequest.getProductId().isEmpty()) {
+			result.addError(new ObjectError("Product", "productID no information"));
+		}
+		
+		if (priceRequest.getPurchaseValue() == null) {
+			result.addError(new ObjectError("Product", "purchaseValue no information"));
+		}
+		
+		if (priceRequest.getSalesValue() == null) {
+			result.addError(new ObjectError("Product", "salesValue no information"));
+		}
+	}
+
+	private void validateCreateProduct(ProductRequest productRequest, BindingResult result) {
+		if (productRequest.getDescProduct() == null || productRequest.getDescProduct().isEmpty()) {
+			result.addError(new ObjectError("Product", "descProduct no information"));
+		}
+		
+		if (productRequest.getPurchaseValue() == null) {
+			result.addError(new ObjectError("Product", "purchaseValue no information"));
+		}
+		
+		if (productRequest.getSalesValue() == null) {
+			result.addError(new ObjectError("Product", "salesValue no information"));
+		}
+		
+		if (productRequest.getDtCollect() == null) {
+			result.addError(new ObjectError("Product", "dtCollect no information"));
+		}
+		
+		if (productRequest.getFlag() == null || productRequest.getFlag().isEmpty()) {
+			result.addError(new ObjectError("Product", "flag no information"));
+		}
+		
+		if (productRequest.getCodResale() == null || productRequest.getCodResale().isEmpty()) {
+			result.addError(new ObjectError("Product", "codResale no information"));
+		}
+		
+		if (productRequest.getDescResale() == null || productRequest.getDescResale().isEmpty()) {
+			result.addError(new ObjectError("Product", "descResale no information"));
+		}
+		
+		if (productRequest.getDescCity() == null || productRequest.getDescCity().isEmpty()) {
+			result.addError(new ObjectError("Product", "descCity no information"));
+		}
+		
+		if (productRequest.getSiglaRegion() == null || productRequest.getSiglaRegion().isEmpty()) {
+			result.addError(new ObjectError("Product", "siglaRegion no information"));
+		}
+		
+		if (productRequest.getDescState() == null || productRequest.getDescState().isEmpty()) {
+			result.addError(new ObjectError("Product", "descState no information"));
+		}
+	}
 	
 	private void validateRegionRequest(RegionRequest region, BindingResult result) {
 		if (region.getRegion() == null || region.getRegion().isEmpty()) {
