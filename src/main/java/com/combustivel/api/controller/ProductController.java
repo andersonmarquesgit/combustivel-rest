@@ -274,7 +274,7 @@ public class ProductController {
 	}
 	
 	@GetMapping(value = "{page}/{count}")
-	@PreAuthorize("hasAnyRole('ADMIN')") // Autorização com base no perfil. Nesse caso apenas ADMIN podem listar usuários.
+	@PreAuthorize("hasAnyRole('ANALYST')") // Autorização com base no perfil. Nesse caso apenas ADMIN podem listar usuários.
 	@ApiOperation(value = "Listar todos os preços usando paginação")
 	@ApiImplicitParams({
 			@ApiImplicitParam(name = "page", value = "Page", required = false, dataType = "string", paramType = "query", defaultValue = "0"),
