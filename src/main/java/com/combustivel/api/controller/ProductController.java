@@ -209,18 +209,13 @@ public class ProductController {
 			BindingResult result) {
 		Response<Product> response = new Response<Product>();
 		try {
-			validateUpdatePrices(priceRequest, result);
+			Product product = validateUpdatePrices(priceRequest, result);
 			if (result.hasErrors()) {
 				result.getAllErrors().forEach(error -> response.getErrors().add(error.getDefaultMessage()));
 				return ResponseEntity.badRequest().body(response);
 			}
 			
-			Product product = this.productService.findById(priceRequest.getProductId());
-			if(product == null) {
-				result.addError(new ObjectError("Product", "Product no exists"));
-				result.getAllErrors().forEach(error -> response.getErrors().add(error.getDefaultMessage()));
-				return ResponseEntity.badRequest().body(response);
-			}else {
+			if(product != null){
 				product.setPurchaseValue(priceRequest.getPurchaseValue());
 				product.setSalesValue(priceRequest.getSalesValue());
 			}
@@ -234,7 +229,7 @@ public class ProductController {
 		return ResponseEntity.ok(response);
 	}
 	
-	private void validateUpdatePrices(PriceRequest priceRequest, BindingResult result) {
+	private Product validateUpdatePrices(PriceRequest priceRequest, BindingResult result) {
 		if (priceRequest.getProductId() == null || priceRequest.getProductId().isEmpty()) {
 			result.addError(new ObjectError("Product", "productID no information"));
 		}
@@ -246,6 +241,13 @@ public class ProductController {
 		if (priceRequest.getSalesValue() == null) {
 			result.addError(new ObjectError("Product", "salesValue no information"));
 		}
+		
+		Product product = this.productService.findById(priceRequest.getProductId());
+		if(product == null) {
+			result.addError(new ObjectError("Product", "Product no exists"));
+		}
+		
+		return product;
 	}
 
 	private void validateCreateProduct(ProductRequest productRequest, BindingResult result) {
