@@ -116,7 +116,7 @@ public class ProductController {
 		return ResponseEntity.ok(response);
 	}
 	
-	@GetMapping(value = "{dtCollect}")
+	@GetMapping(value = "/collections/{dtCollect}")
 	@PreAuthorize("hasAnyRole('ANALYST')")
 	@ApiOperation(value = "Recurso que retorna os dados agrupados pela data da coleta", consumes = MediaType.APPLICATION_JSON_VALUE, produces = MediaType.APPLICATION_JSON_VALUE)
 	@ApiResponses(value = { @ApiResponse(code = 200, message = "Success", response = Product.class),
