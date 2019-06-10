@@ -22,5 +22,8 @@ public class ProductServiceImpl implements ProductService {
 		}
 	}
 	
-	
+	@Override
+	public List<Product> findAllByRegion(String region) {
+		return productRepository.findAllByRegion(region);
+	}
 }

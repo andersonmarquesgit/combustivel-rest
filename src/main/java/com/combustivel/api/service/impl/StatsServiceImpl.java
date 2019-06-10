@@ -6,12 +6,13 @@ import java.util.List;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import com.combustivel.api.entity.Product;
 import com.combustivel.api.repository.ProductRepository;
 import com.combustivel.api.response.AverageValues;
 import com.combustivel.api.service.StatsService;
 
 @Service
-public class StasServiceImpl implements StatsService {
+public class StatsServiceImpl implements StatsService {
 
 	@Autowired
 	private ProductRepository productRepository;

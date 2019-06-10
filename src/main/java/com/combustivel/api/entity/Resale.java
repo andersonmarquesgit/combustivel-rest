@@ -13,13 +13,17 @@ import javax.persistence.ManyToOne;
 import javax.persistence.OneToMany;
 import javax.persistence.Table;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
+
 import lombok.Getter;
+import lombok.NoArgsConstructor;
 import lombok.Setter;
 
 @Entity
 @Table(name = "tb_resale")
 @Getter
 @Setter
+@NoArgsConstructor
 public class Resale {
 
 	@Id
@@ -37,6 +41,7 @@ public class Resale {
 	private City city;
 	
 	@OneToMany(mappedBy = "resale", cascade = CascadeType.PERSIST)
+	@JsonIgnore
 	private List<Product> products;
 
 	public Resale(String region, String state, String city, 
@@ -45,4 +50,5 @@ public class Resale {
 		this.desc = desc;
 		this.city = new City(region, state, city);
 	}
+
 }

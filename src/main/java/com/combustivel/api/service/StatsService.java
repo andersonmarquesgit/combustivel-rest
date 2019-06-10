@@ -3,6 +3,7 @@ package com.combustivel.api.service;
 import java.math.BigDecimal;
 import java.util.List;
 
+import com.combustivel.api.entity.Product;
 import com.combustivel.api.response.AverageValues;
 
 public interface StatsService {

@@ -12,12 +12,14 @@ import javax.persistence.ManyToOne;
 import javax.persistence.Table;
 
 import lombok.Getter;
+import lombok.NoArgsConstructor;
 import lombok.Setter;
 
 @Entity
 @Table(name = "tb_product")
 @Getter
 @Setter
+@NoArgsConstructor
 public class Product {
 
 	@Id
@@ -57,4 +59,5 @@ public class Product {
 		this.unity = unity;
 		this.resale = new Resale(region, state, city, cod, descRevenda);
 	}
+
 }

@@ -30,4 +30,11 @@ public interface ProductRepository  extends JpaRepository<Product, String> {
 			+ " FROM Product p"
 			+ " GROUP BY p.flag")
 	List<AverageValues> averageByFlag(); 
+	
+	@Query("SELECT p FROM Product p"
+			+ " JOIN p.resale r ON p.resale.id = r.id"
+			+ " JOIN r.city c ON r.city.id = c.id"
+			+ " JOIN c.state s ON c.state.id = s.id"
+			+ " WHERE s.region = :region")
+	List<Product> findAllByRegion(@Param("region") String region);
 }
