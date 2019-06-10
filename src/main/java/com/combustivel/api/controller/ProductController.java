@@ -30,6 +30,8 @@ import com.combustivel.api.response.Response;
 import com.combustivel.api.service.ProductService;
 
 import io.swagger.annotations.Api;
+import io.swagger.annotations.ApiImplicitParam;
+import io.swagger.annotations.ApiImplicitParams;
 import io.swagger.annotations.ApiOperation;
 import io.swagger.annotations.ApiParam;
 import io.swagger.annotations.ApiResponse;
@@ -150,8 +152,7 @@ public class ProductController {
 	
 	
 	@PostMapping
-	@PreAuthorize("hasAnyRole('ANALYST')") // Autorização com base no perfil. Nesse caso apenas ADMIN podem criar
-											// usuários.
+	@PreAuthorize("hasAnyRole('ANALYST')")
 	@ApiOperation(value = "Recurso para CRUD de histórico de preço de combustível", 
 		consumes = MediaType.APPLICATION_JSON_VALUE, produces = MediaType.APPLICATION_JSON_VALUE)
 	@ApiResponses(@ApiResponse(code = 201, message = "Novo preço criado", response = Product.class, 
@@ -196,7 +197,7 @@ public class ProductController {
 	}
 	
 	@PutMapping
-	@PreAuthorize("hasAnyRole('ANALYST')") // Autorização com base no perfil. Nesse caso apenas ADMIN podem atualizar usuários.
+	@PreAuthorize("hasAnyRole('ANALYST')")
 	@ApiOperation(value = "Atualização de preços", consumes = MediaType.APPLICATION_JSON_VALUE, produces = MediaType.APPLICATION_JSON_VALUE)
 	@ApiResponses(@ApiResponse(code = 200, message = "Preço atualizado", response = Product.class, 
 		responseHeaders = @ResponseHeader(name = "Location", description = "uri do preço atualizado", response = String.class)))
@@ -226,6 +227,27 @@ public class ProductController {
 			response.getErrors().add(e.getMessage());
 			return ResponseEntity.badRequest().body(response);
 		}
+		return ResponseEntity.ok(response);
+	}
+	
+	@GetMapping(value = "{id}")
+	@PreAuthorize("hasAnyRole('ANALYST')")
+	@ApiOperation(value = "Consultar produto pelo id")
+	@ApiImplicitParams({
+			@ApiImplicitParam(name = "id", value = "Id do produto", required = false, dataType = "string", paramType = "query", defaultValue = "1") })
+	@ApiResponses(value = { @ApiResponse(code = 200, message = "Success", response = Product.class),
+			@ApiResponse(code = 401, message = "Unauthorized"), @ApiResponse(code = 403, message = "Forbidden"),
+			@ApiResponse(code = 404, message = "Not Found"), @ApiResponse(code = 500, message = "Failure") })
+	public ResponseEntity<Response<Product>> findById(@PathVariable String id) {
+		Response<Product> response = new Response<Product>();
+		Product product = this.productService.findById(id);
+
+		if (product == null) {
+			response.getErrors().add("Register not found! ID: " + id);
+			return ResponseEntity.badRequest().body(response);
+		}
+
+		response.setData(product);
 		return ResponseEntity.ok(response);
 	}
 	
