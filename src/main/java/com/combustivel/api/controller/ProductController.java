@@ -6,6 +6,7 @@ import java.util.List;
 import javax.servlet.http.HttpServletRequest;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Page;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
@@ -270,6 +271,23 @@ public class ProductController {
 		this.productService.delete(id);
 
 		return ResponseEntity.ok(new Response<String>());
+	}
+	
+	@GetMapping(value = "{page}/{count}")
+	@PreAuthorize("hasAnyRole('ADMIN')") // Autorização com base no perfil. Nesse caso apenas ADMIN podem listar usuários.
+	@ApiOperation(value = "Listar todos os preços usando paginação")
+	@ApiImplicitParams({
+			@ApiImplicitParam(name = "page", value = "Page", required = false, dataType = "string", paramType = "query", defaultValue = "0"),
+			@ApiImplicitParam(name = "count", value = "Count", required = false, dataType = "string", paramType = "query", defaultValue = "10")})
+	@ApiResponses(value = { @ApiResponse(code = 200, message = "Success", responseContainer = "Page"),
+			@ApiResponse(code = 401, message = "Unauthorized"), @ApiResponse(code = 403, message = "Forbidden"),
+			@ApiResponse(code = 404, message = "Not Found"), @ApiResponse(code = 500, message = "Failure") })
+	public ResponseEntity<Response<Page<Product>>> findAll(@PathVariable int page, @PathVariable int count) {
+		Response<Page<Product>> response = new Response<Page<Product>>();
+		Page<Product> users = this.productService.findAll(page, count);
+		response.setData(users);
+
+		return ResponseEntity.ok(response);
 	}
 	
 	private Product validateUpdatePrices(PriceRequest priceRequest, BindingResult result) {
