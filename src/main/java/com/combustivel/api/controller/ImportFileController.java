@@ -1,6 +1,9 @@
 package com.combustivel.api.controller;
 
+import java.math.BigDecimal;
+
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.MediaType;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -12,6 +15,9 @@ import org.springframework.web.multipart.MultipartFile;
 import com.combustivel.api.service.ImportFileService;
 
 import io.swagger.annotations.Api;
+import io.swagger.annotations.ApiOperation;
+import io.swagger.annotations.ApiResponse;
+import io.swagger.annotations.ApiResponses;
 
 @RestController
 @RequestMapping("/upload")
@@ -24,8 +30,9 @@ public class ImportFileController {
     
 	@PostMapping
 	@PreAuthorize("hasAnyRole('ANALYST')") // Autorização com base no perfil. Nesse caso apenas ANALYST pode importar
+	@ApiOperation(value = "Recurso para importação de csv")
+	@ApiResponses(@ApiResponse(code = 200, message = "ok"))
 	public void importFile(@RequestParam MultipartFile file) {
-		
 		importFileService.importFile(file);
 	}
 }
