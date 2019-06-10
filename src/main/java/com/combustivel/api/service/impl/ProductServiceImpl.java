@@ -1,5 +1,6 @@
 package com.combustivel.api.service.impl;
 
+import java.time.LocalDate;
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -30,5 +31,10 @@ public class ProductServiceImpl implements ProductService {
 	@Override
 	public List<Product> findAllByResale(String resaleDesc) {
 		return productRepository.findAllByResale(resaleDesc);
+	}
+
+	@Override
+	public List<Product> findByDtCollect(LocalDate dtCollect) {
+		return productRepository.findByDtCollect(dtCollect);
 	}
 }

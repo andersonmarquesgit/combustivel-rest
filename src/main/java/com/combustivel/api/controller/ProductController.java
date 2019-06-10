@@ -1,5 +1,6 @@
 package com.combustivel.api.controller;
 
+import java.time.LocalDate;
 import java.util.List;
 
 import javax.servlet.http.HttpServletRequest;
@@ -12,8 +13,10 @@ import org.springframework.validation.BindingResult;
 import org.springframework.validation.ObjectError;
 import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.combustivel.api.entity.Product;
@@ -101,6 +104,39 @@ public class ProductController {
 		return ResponseEntity.ok(response);
 	}
 	
+	@GetMapping(value = "{dtCollect}")
+	@PreAuthorize("hasAnyRole('ANALYST')")
+	@ApiOperation(value = "Recurso que retorna os dados agrupados pela data da coleta", consumes = MediaType.APPLICATION_JSON_VALUE, produces = MediaType.APPLICATION_JSON_VALUE)
+	@ApiResponses(@ApiResponse(code = 200, message = "ok", response = Product.class))
+	public ResponseEntity<?> findAllByDtCollect(HttpServletRequest request,
+			@ApiParam(
+				    value="dtCollect", 
+				    name="dtCollect", 
+				    required=true)
+			@PathVariable String dtCollect, BindingResult result){
+		
+		Response<List<Product>> response = new Response<List<Product>>();
+		List<Product> products;
+		
+		LocalDate dateCollect = LocalDate.parse(dtCollect);
+		try {
+			this.validateDateCollect(dateCollect, result);
+			if (result.hasErrors()) {
+				result.getAllErrors().forEach(error -> response.getErrors().add(error.getDefaultMessage()));
+				return ResponseEntity.badRequest().body(response);
+			}
+			
+			products = productService.findByDtCollect(dateCollect);
+			
+		} catch (Exception e) {
+			response.getErrors().add(e.getMessage());
+			return ResponseEntity.badRequest().body(response);
+		}
+
+		response.setData(products);
+		return ResponseEntity.ok(response);
+	}
+	
 	private void validateRegionRequest(RegionRequest region, BindingResult result) {
 		if (region.getRegion() == null || region.getRegion().isEmpty()) {
 			result.addError(new ObjectError("RegionRequest", "Region no information"));
@@ -110,6 +146,12 @@ public class ProductController {
 	private void validateResaleRequest(ResaleRequest resale, BindingResult result) {
 		if (resale.getResaleDesc() == null || resale.getResaleDesc().isEmpty()) {
 			result.addError(new ObjectError("ResaleRequest", "Resale no information"));
+		}
+	}
+	
+	private void validateDateCollect(LocalDate dtCollect, BindingResult result) {
+		if (dtCollect == null) {
+			result.addError(new ObjectError("Date Collect", "Date Collect no information"));
 		}
 	}
 }

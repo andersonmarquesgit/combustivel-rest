@@ -1,6 +1,7 @@
 package com.combustivel.api.repository;
 
 import java.math.BigDecimal;
+import java.time.LocalDate;
 import java.util.List;
 
 import org.springframework.data.jpa.repository.JpaRepository;
@@ -42,4 +43,6 @@ public interface ProductRepository  extends JpaRepository<Product, String> {
 			+ " JOIN p.resale r ON p.resale.id = r.id"
 			+ " WHERE r.desc = :resaleDesc")
 	List<Product> findAllByResale(@Param("resaleDesc") String resaleDesc);
+	
+	List<Product> findByDtCollect(LocalDate dtCollect);
 }
