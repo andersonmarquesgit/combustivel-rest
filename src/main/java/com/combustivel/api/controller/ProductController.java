@@ -13,6 +13,7 @@ import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.validation.BindingResult;
 import org.springframework.validation.ObjectError;
 import org.springframework.web.bind.annotation.CrossOrigin;
+import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -249,6 +250,26 @@ public class ProductController {
 
 		response.setData(product);
 		return ResponseEntity.ok(response);
+	}
+	
+	@DeleteMapping(value = "{id}")
+	@PreAuthorize("hasAnyRole('ANALYST')")
+	@ApiOperation(value = "Remover produto", consumes = MediaType.APPLICATION_JSON_VALUE, produces = MediaType.APPLICATION_JSON_VALUE)
+	@ApiResponses(value = { @ApiResponse(code = 200, message = "Success", response = Product.class),
+			@ApiResponse(code = 401, message = "Unauthorized"), @ApiResponse(code = 403, message = "Forbidden"),
+			@ApiResponse(code = 404, message = "Not Found"), @ApiResponse(code = 500, message = "Failure") })
+	public ResponseEntity<Response<String>> delete(@PathVariable String id) {
+		Response<String> response = new Response<String>();
+		Product user = this.productService.findById(id);
+
+		if (user == null) {
+			response.getErrors().add("Register not found! ID: " + id);
+			return ResponseEntity.badRequest().body(response);
+		}
+
+		this.productService.delete(id);
+
+		return ResponseEntity.ok(new Response<String>());
 	}
 	
 	private Product validateUpdatePrices(PriceRequest priceRequest, BindingResult result) {
