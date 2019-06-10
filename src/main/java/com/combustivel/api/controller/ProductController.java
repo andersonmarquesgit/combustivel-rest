@@ -16,7 +16,6 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.combustivel.api.entity.Product;
@@ -43,7 +42,9 @@ public class ProductController {
 	@GetMapping(value = "/region")
 	@PreAuthorize("hasAnyRole('ANALYST')")
 	@ApiOperation(value = "Recurso que retorna todas as informações importadas por sigla da região", consumes = MediaType.APPLICATION_JSON_VALUE, produces = MediaType.APPLICATION_JSON_VALUE)
-	@ApiResponses(@ApiResponse(code = 200, message = "ok", response = Product.class))
+	@ApiResponses(value = { @ApiResponse(code = 200, message = "Success", response = Product.class),
+			@ApiResponse(code = 401, message = "Unauthorized"), @ApiResponse(code = 403, message = "Forbidden"),
+			@ApiResponse(code = 404, message = "Not Found"), @ApiResponse(code = 500, message = "Failure") })
 	public ResponseEntity<?> findAllByRegion(HttpServletRequest request, 
 			@ApiParam(
 				    value="RegionRequest", 
@@ -75,7 +76,9 @@ public class ProductController {
 	@GetMapping(value = "/resale")
 	@PreAuthorize("hasAnyRole('ANALYST')")
 	@ApiOperation(value = "Recurso que retorna os dados agrupados por distribuidora", consumes = MediaType.APPLICATION_JSON_VALUE, produces = MediaType.APPLICATION_JSON_VALUE)
-	@ApiResponses(@ApiResponse(code = 200, message = "ok", response = Product.class))
+	@ApiResponses(value = { @ApiResponse(code = 200, message = "Success", response = Product.class),
+			@ApiResponse(code = 401, message = "Unauthorized"), @ApiResponse(code = 403, message = "Forbidden"),
+			@ApiResponse(code = 404, message = "Not Found"), @ApiResponse(code = 500, message = "Failure") })
 	public ResponseEntity<?> findAllByResale(HttpServletRequest request, 
 			@ApiParam(
 				    value="ResaleRequest", 
@@ -107,7 +110,9 @@ public class ProductController {
 	@GetMapping(value = "{dtCollect}")
 	@PreAuthorize("hasAnyRole('ANALYST')")
 	@ApiOperation(value = "Recurso que retorna os dados agrupados pela data da coleta", consumes = MediaType.APPLICATION_JSON_VALUE, produces = MediaType.APPLICATION_JSON_VALUE)
-	@ApiResponses(@ApiResponse(code = 200, message = "ok", response = Product.class))
+	@ApiResponses(value = { @ApiResponse(code = 200, message = "Success", response = Product.class),
+			@ApiResponse(code = 401, message = "Unauthorized"), @ApiResponse(code = 403, message = "Forbidden"),
+			@ApiResponse(code = 404, message = "Not Found"), @ApiResponse(code = 500, message = "Failure") })
 	public ResponseEntity<?> findAllByDtCollect(HttpServletRequest request,
 			@ApiParam(
 				    value="dtCollect", 

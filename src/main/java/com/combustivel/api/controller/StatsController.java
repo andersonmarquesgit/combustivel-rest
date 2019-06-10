@@ -40,7 +40,9 @@ public class StatsController {
 	@GetMapping(value = "/averages")
 	@PreAuthorize("hasAnyRole('ANALYST')")
 	@ApiOperation(value = "Retorna a média de preço de combustível com base no nome do município", consumes = MediaType.APPLICATION_JSON_VALUE, produces = MediaType.APPLICATION_JSON_VALUE)
-	@ApiResponses(@ApiResponse(code = 200, message = "ok", response = BigDecimal.class))
+	@ApiResponses(value = { @ApiResponse(code = 200, message = "Success", response = BigDecimal.class),
+			@ApiResponse(code = 401, message = "Unauthorized"), @ApiResponse(code = 403, message = "Forbidden"),
+			@ApiResponse(code = 404, message = "Not Found"), @ApiResponse(code = 500, message = "Failure") })
 	public ResponseEntity<?> averageFuelPriceCity(HttpServletRequest request, 
 			@ApiParam(
 				    value="CityRequest", 
@@ -74,7 +76,9 @@ public class StatsController {
 	@PreAuthorize("hasAnyRole('ANALYST')")
 	@ApiOperation(value = "Retorna o valor médio do valor da compra e do valor da venda por município", 
 		consumes = MediaType.APPLICATION_JSON_VALUE, produces = MediaType.APPLICATION_JSON_VALUE)
-	@ApiResponses(@ApiResponse(code = 200, message = "ok", response = AverageValues.class))
+	@ApiResponses(value = { @ApiResponse(code = 200, message = "Success", response = AverageValues.class),
+			@ApiResponse(code = 401, message = "Unauthorized"), @ApiResponse(code = 403, message = "Forbidden"),
+			@ApiResponse(code = 404, message = "Not Found"), @ApiResponse(code = 500, message = "Failure") })
 	public ResponseEntity<?> averageValuesByCity(){
 		Response<List<AverageValues>> response = new Response<List<AverageValues>>();
 		List<AverageValues> averageValues;
@@ -87,7 +91,9 @@ public class StatsController {
 	@PreAuthorize("hasAnyRole('ANALYST')")
 	@ApiOperation(value = "Retorna o valor médio do valor da compra e do valor da venda por bandeira", 
 		consumes = MediaType.APPLICATION_JSON_VALUE, produces = MediaType.APPLICATION_JSON_VALUE)
-	@ApiResponses(@ApiResponse(code = 200, message = "ok", response = AverageValues.class))
+	@ApiResponses(value = { @ApiResponse(code = 200, message = "Success", response = AverageValues.class),
+			@ApiResponse(code = 401, message = "Unauthorized"), @ApiResponse(code = 403, message = "Forbidden"),
+			@ApiResponse(code = 404, message = "Not Found"), @ApiResponse(code = 500, message = "Failure") })
 	public ResponseEntity<?> averageValuesByFlag(){
 		Response<List<AverageValues>> response = new Response<List<AverageValues>>();
 		List<AverageValues> averageValues;
