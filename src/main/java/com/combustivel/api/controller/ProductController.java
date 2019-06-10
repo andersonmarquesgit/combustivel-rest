@@ -6,6 +6,7 @@ import java.util.List;
 import javax.servlet.http.HttpServletRequest;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.prepost.PreAuthorize;
@@ -14,11 +15,14 @@ import org.springframework.validation.ObjectError;
 import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.combustivel.api.entity.Product;
+import com.combustivel.api.entity.User;
+import com.combustivel.api.request.ProductRequest;
 import com.combustivel.api.request.RegionRequest;
 import com.combustivel.api.request.ResaleRequest;
 import com.combustivel.api.response.Response;
@@ -29,6 +33,7 @@ import io.swagger.annotations.ApiOperation;
 import io.swagger.annotations.ApiParam;
 import io.swagger.annotations.ApiResponse;
 import io.swagger.annotations.ApiResponses;
+import io.swagger.annotations.ResponseHeader;
 
 @RestController
 @RequestMapping("/products")
@@ -141,6 +146,60 @@ public class ProductController {
 		response.setData(products);
 		return ResponseEntity.ok(response);
 	}
+	
+	
+	@PostMapping
+	@PreAuthorize("hasAnyRole('ANALYST')") // Autorização com base no perfil. Nesse caso apenas ADMIN podem criar
+											// usuários.
+	@ApiOperation(value = "Recurso para CRUD de histórico de preço de combustível", 
+		consumes = MediaType.APPLICATION_JSON_VALUE, produces = MediaType.APPLICATION_JSON_VALUE)
+	@ApiResponses(@ApiResponse(code = 201, message = "Novo preço criado", response = User.class, 
+		responseHeaders = @ResponseHeader(name = "User", description = "Preço criado", response = Product.class)))
+	public ResponseEntity<Response<Product>> create(HttpServletRequest request, 
+			@ApiParam(
+				    value="ProductRequest", 
+				    name="productRequest", 
+				    required=true)
+			@RequestBody ProductRequest productRequest,
+			BindingResult result) {
+		Response<Product> response = new Response<Product>();
+
+		try {
+			validateCreateProduct(productRequest, result);
+			if (result.hasErrors()) {
+				result.getAllErrors().forEach(error -> response.getErrors().add(error.getDefaultMessage()));
+				return ResponseEntity.badRequest().body(response);
+			}
+			
+			Product product = new Product(
+					productRequest.getSiglaRegion(), 
+					productRequest.getDescState(), 
+					productRequest.getDescCity(), 
+					productRequest.getCodResale(), 
+					productRequest.getDescResale(), 
+					productRequest.getDescProduct(), 
+					productRequest.getDtCollect(), 
+					productRequest.getPurchaseValue(), 
+					productRequest.getSalesValue(), 
+					productRequest.getUnity(), 
+					productRequest.getFlag());
+			
+			Product productPersisted = this.productService.createOrUpdate(product);
+			response.setData(productPersisted);
+		} catch (Exception e) {
+			response.getErrors().add(e.getMessage());
+			return ResponseEntity.badRequest().body(response);
+		}
+
+		return new ResponseEntity<>(response, HttpStatus.CREATED);
+	}
+	
+	private void validateCreateProduct(ProductRequest productRequest, BindingResult result) {
+		if (productRequest == null) {
+			result.addError(new ObjectError("Product", "Email no information"));
+		}
+	}
+	
 	
 	private void validateRegionRequest(RegionRequest region, BindingResult result) {
 		if (region.getRegion() == null || region.getRegion().isEmpty()) {

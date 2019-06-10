@@ -4,6 +4,8 @@ import java.time.LocalDate;
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
 import org.springframework.stereotype.Service;
 
 import com.combustivel.api.entity.Product;
@@ -36,5 +38,25 @@ public class ProductServiceImpl implements ProductService {
 	@Override
 	public List<Product> findByDtCollect(LocalDate dtCollect) {
 		return productRepository.findByDtCollect(dtCollect);
+	}
+
+	@Override
+	public Product createOrUpdate(Product product) {
+		return productRepository.save(product);
+	}
+
+	@Override
+	public Product findById(String id) {
+		return productRepository.findOneById(id);
+	}
+
+	@Override
+	public void delete(String id) {
+		productRepository.deleteById(id);
+	}
+
+	@Override
+	public Page<Product> findAll(int page, int count) {
+		return this.productRepository.findAll(PageRequest.of(page, count));
 	}
 }
