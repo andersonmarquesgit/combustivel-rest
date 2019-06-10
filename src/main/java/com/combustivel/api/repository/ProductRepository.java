@@ -1,6 +1,7 @@
 package com.combustivel.api.repository;
 
 import java.math.BigDecimal;
+import java.util.List;
 
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
@@ -23,10 +24,10 @@ public interface ProductRepository  extends JpaRepository<Product, String> {
 			+ " JOIN p.resale r ON p.resale.id = r.id"
 			+ " JOIN r.city c ON r.city.id = c.id"
 			+ " GROUP BY c.city")
-	AverageValues averageByCity(); 
+	List<AverageValues> averageByCity(); 
 	
 	@Query("SELECT new com.combustivel.api.response.AverageValues(AVG(p.purchaseValue), AVG(p.salesValue), p.flag)"
 			+ " FROM Product p"
 			+ " GROUP BY p.flag")
-	AverageValues averageByFlag(); 
+	List<AverageValues> averageByFlag(); 
 }

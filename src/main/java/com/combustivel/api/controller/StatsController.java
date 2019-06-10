@@ -1,6 +1,7 @@
 package com.combustivel.api.controller;
 
 import java.math.BigDecimal;
+import java.util.List;
 
 import javax.servlet.http.HttpServletRequest;
 
@@ -69,15 +70,28 @@ public class StatsController {
 		return ResponseEntity.ok(response);
 	}
 	
-	@GetMapping(value = "/averages/city")
+	@GetMapping(value = "/averages/cities")
 	@PreAuthorize("hasAnyRole('ANALYST')")
 	@ApiOperation(value = "Retorna o valor médio do valor da compra e do valor da venda por município", 
 		consumes = MediaType.APPLICATION_JSON_VALUE, produces = MediaType.APPLICATION_JSON_VALUE)
-	@ApiResponses(@ApiResponse(code = 200, message = "ok", response = BigDecimal.class))
+	@ApiResponses(@ApiResponse(code = 200, message = "ok", response = AverageValues.class))
 	public ResponseEntity<?> averageValuesByCity(){
-		Response<AverageValues> response = new Response<AverageValues>();
-		AverageValues averageValues;
+		Response<List<AverageValues>> response = new Response<List<AverageValues>>();
+		List<AverageValues> averageValues;
 		averageValues = statsService.averageByCity();
+		response.setData(averageValues);
+		return ResponseEntity.ok(response);
+	}
+	
+	@GetMapping(value = "/averages/flags")
+	@PreAuthorize("hasAnyRole('ANALYST')")
+	@ApiOperation(value = "Retorna o valor médio do valor da compra e do valor da venda por bandeira", 
+		consumes = MediaType.APPLICATION_JSON_VALUE, produces = MediaType.APPLICATION_JSON_VALUE)
+	@ApiResponses(@ApiResponse(code = 200, message = "ok", response = AverageValues.class))
+	public ResponseEntity<?> averageValuesByFlag(){
+		Response<List<AverageValues>> response = new Response<List<AverageValues>>();
+		List<AverageValues> averageValues;
+		averageValues = statsService.averageByFlag();
 		response.setData(averageValues);
 		return ResponseEntity.ok(response);
 	}

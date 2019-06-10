@@ -1,6 +1,7 @@
 package com.combustivel.api.service.impl;
 
 import java.math.BigDecimal;
+import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -21,8 +22,13 @@ public class StasServiceImpl implements StatsService {
 	}
 
 	@Override
-	public AverageValues averageByCity() {
+	public List<AverageValues> averageByCity() {
 		return productRepository.averageByCity();
+	}
+
+	@Override
+	public List<AverageValues> averageByFlag() {
+		return productRepository.averageByFlag();
 	}
 
 }
